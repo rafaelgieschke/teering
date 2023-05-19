@@ -20,6 +20,7 @@ int main(int argc, char *argv[]) {
     return 1;
   }
   char *file = mmap(0, size, PROT_WRITE, MAP_SHARED, fd, 0);
+  close(fd);
   if (file == MAP_FAILED) {
     perror("mmap");
     return 1;
