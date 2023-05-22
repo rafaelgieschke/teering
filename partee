@@ -1,0 +1,12 @@
+#!/bin/sh -eu
+
+prefix="$1"
+partSize="$2"
+
+suffix=0
+while head -c "$partSize" >"$prefix.$suffix"; do
+	if test "$(stat -c %s -- "$prefix.$suffix")" -lt "$partSize"; then
+		break
+	fi
+	suffix="$((!suffix))"
+done
