@@ -1,0 +1,7 @@
+#!/bin/sh -eu
+
+socket="$1"
+
+trap 'mv "$socket.real" "$socket"' EXIT INT HUP TERM
+mv -n -- "$socket" "$socket.real" || :
+socat -v -x -t100 "unix-listen:$socket,mode=$(stat -c %a -- "$socket.real"),reuseaddr,fork" "unix-connect:$socket.real" 2>&1
